@@ -1,0 +1,5 @@
+# ディレクトリを指定する場合
+node_modules/
+# Miscellaneous
+.DS_Store
+.env
