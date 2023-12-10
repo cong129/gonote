@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js",
-    "express-dev": "nodemon ./src/server.js",
+    "dev": "nodemon ./src/server.js",
     "makeMig": "knex migrate:make",
     "makeSeed": "knex seed:make",
     "seed-data": "knex seed:run",
@@ -22,6 +22,7 @@
     "express": "^4.18.2",
     "knex": "^3.1.0",
     "nodemon": "^3.0.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pg": "^8.11.3"
   }
 }
