@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gonote/model/note.dart';
+import "package:http/http.dart" as http;
+import "dart:convert";
 
 class NewNote extends StatelessWidget {
   const NewNote({
@@ -85,14 +87,34 @@ class NewNote extends StatelessWidget {
         );
         return;
       }
+
+      final postData = {
+        "title": titleController.text,
+        "note": noteController.text,
+        "editTime": DateTime.now().toIso8601String(),
+      };
+
       // widget.onAddnote(
+      final url = Uri.http("10.0.2.2:3000", "/newItem");
+      final responseId = await http.post(
+        url,
+        headers: {"Content-type": "application/json"},
+        body: json.encode(postData),
+      );
+      final decodedRes = json.decode(responseId.body);
+
+      // final Map<String, dynamic> listData = json.decode(response.body);
       onAddnote(
         Note(
+            id: decodedRes[0]["id"],
             title: titleController.text,
             note: noteController.text,
             editTime: DateTime.now()),
       );
-      Navigator.pop(context);
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).pop();
     }
 
     return SizedBox(

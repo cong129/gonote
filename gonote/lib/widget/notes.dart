@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gonote/model/note.dart';
 import 'package:gonote/widget/new_note.dart';
 import 'package:gonote/widget/notes_list.dart';
+import "package:http/http.dart" as http;
+import "dart:convert";
 
 class Notes extends StatefulWidget {
   const Notes({super.key});
@@ -11,18 +13,51 @@ class Notes extends StatefulWidget {
 }
 
 class _NotesState extends State<Notes> {
-  final List<Note> _registeredNotes = [];
+  List<Note> _registeredNotes = [];
 
-  void _addNote(Note note) {
+  void _loadItems() async {
+    final url = Uri.http("10.0.2.2:3000", "/all-note-titles");
+    final response = await http.get(url);
+    final listData = json.decode(response.body);
+    // print(listData);
+    final List<Note> loadedItems = [];
+    for (final item in listData) {
+      print(item);
+      loadedItems.add(
+        Note(
+          id: item["id"],
+          title: item["title"],
+          note: item["note_detail"],
+          editTime: DateTime.parse(item["edit_time"]),
+        ),
+      );
+    }
+    setState(() {
+      _registeredNotes = loadedItems;
+    });
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      _loadItems();
+      super.initState();
+    });
+  }
+
+  void _addNote(Note note) async {
     setState(() {
       _registeredNotes.add(note);
+      _registeredNotes.sort((a, b) => b.editTime.compareTo(a.editTime));
     });
   }
 
   void _editItem(index, Note note) {
     setState(() {
       _registeredNotes[index] = note;
+      _registeredNotes.sort((a, b) => b.editTime.compareTo(a.editTime));
     });
+    _loadItems();
   }
 
   void _openAddNoteOverlay() {

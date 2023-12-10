@@ -13,8 +13,9 @@ class NoteEdit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void submitEdit(String title, String note) {
+    void submitEdit(int id, String title, String note) {
       Note afterEditNote = Note(
+        id: id,
         title: title,
         editTime: DateTime.now(),
         note: note,
@@ -34,7 +35,7 @@ class NoteEdit extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                submitEdit(titleController.text, noteController.text);
+                submitEdit(note.id, titleController.text, noteController.text);
               },
               icon: const Icon(Icons.edit_note))
         ],
