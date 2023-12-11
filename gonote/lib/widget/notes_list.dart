@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gonote/model/note.dart';
 import 'package:gonote/note_edit.dart';
 import 'package:gonote/widget/note_item.dart';
-import "dart:convert";
 import "package:http/http.dart" as http;
 
 class NotesList extends StatelessWidget {
@@ -44,7 +43,7 @@ class NotesList extends StatelessWidget {
         key: ValueKey(notes[index]),
         onDismissed: (direction) async {
           final url = Uri.http("10.0.2.2:3000", "/${notes[index].id}");
-          final response = await http.delete(url);
+          await http.delete(url);
           onRemoveNote(notes[index]);
         },
         child: NoteItem(

@@ -16,13 +16,12 @@ class _NotesState extends State<Notes> {
   List<Note> _registeredNotes = [];
 
   void _loadItems() async {
-    final url = Uri.http("10.0.2.2:3000", "/all-note-titles");
+    final url = Uri.http(SERVER_URL, "/all-note-titles");
     final response = await http.get(url);
     final listData = json.decode(response.body);
     // print(listData);
     final List<Note> loadedItems = [];
     for (final item in listData) {
-      print(item);
       loadedItems.add(
         Note(
           id: item["id"],
@@ -52,7 +51,7 @@ class _NotesState extends State<Notes> {
     });
   }
 
-  void _editItem(index, Note note) {
+  void _editItem(index, Note note) async {
     setState(() {
       _registeredNotes[index] = note;
       _registeredNotes.sort((a, b) => b.editTime.compareTo(a.editTime));
@@ -113,7 +112,11 @@ class _NotesState extends State<Notes> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Gonote"),
+        title: const Center(
+          child: Text(
+            "GONote",
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: _openAddNoteOverlay,

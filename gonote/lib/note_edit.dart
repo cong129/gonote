@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gonote/model/note.dart';
+import "package:http/http.dart" as http;
+import "dart:convert";
 
 class NoteEdit extends StatelessWidget {
   NoteEdit(
@@ -8,19 +10,30 @@ class NoteEdit extends StatelessWidget {
       required this.index,
       required this.onEdit});
   Note note;
-  int index;
+  final int index;
   final void Function(int index, Note note) onEdit;
 
   @override
   Widget build(BuildContext context) {
-    void submitEdit(int id, String title, String note) {
+    void submitEdit(int id, String title, String note) async {
       Note afterEditNote = Note(
         id: id,
         title: title,
         editTime: DateTime.now(),
         note: note,
       );
+
+      final url = Uri.http(SERVER_URL, "$id");
+      final response = await http.put(
+        url,
+        headers: {"Content-type": "application/json"},
+        body: json.encode(afterEditNote.toJson()),
+      );
+      final updatedId = json.decode(response.body);
+      print(updatedId);
+
       onEdit(index, afterEditNote);
+      if (!context.mounted) return;
       Navigator.pop(context);
     }
 

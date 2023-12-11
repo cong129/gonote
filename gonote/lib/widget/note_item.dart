@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gonote/model/note.dart';
-import 'package:gonote/note_edit.dart';
-import 'package:gonote/widget/new_note.dart';
+
+const int MAX_NOTE_LENGTH = 20;
 
 class NoteItem extends StatelessWidget {
   const NoteItem(this.index, this.note,
@@ -12,6 +12,12 @@ class NoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int noteLength;
+    if (note.note.length < MAX_NOTE_LENGTH) {
+      noteLength = note.note.length;
+    } else {
+      noteLength = MAX_NOTE_LENGTH;
+    }
     return InkWell(
       onTap: onSelectNote,
       child: Card(
@@ -20,20 +26,25 @@ class NoteItem extends StatelessWidget {
             horizontal: 20,
             vertical: 16,
           ),
-          child: Column(children: [
-            Text(
-              note.title,
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            Row(
+          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  note.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
                 Text(note.formattedDate),
-                const Spacer(),
-                Text(note.note),
               ],
-            )
+            ),
+            const Spacer(),
+            Text(note.note.substring(0, noteLength)),
           ]),
         ),
       ),

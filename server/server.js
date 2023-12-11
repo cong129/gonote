@@ -52,6 +52,20 @@ const setupServer = () => {
     }
   });
 
+  app.put('/:id', async (req, res) => {
+    let newData = { ...req.body };
+    delete newData.id;
+    try {
+      const updatedId = await knex(NOTES_TABLE)
+        .where({ id: req.params.id })
+        .update(newData)
+        .returning('id');
+      res.send(updatedId);
+    } catch (err) {
+      res.status(404).send(err);
+    }
+  });
+
   return app;
 };
 
