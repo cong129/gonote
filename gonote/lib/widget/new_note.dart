@@ -95,7 +95,8 @@ class NewNote extends StatelessWidget {
       };
 
       // widget.onAddnote(
-      final url = Uri.http("10.0.2.2:3000", "/newItem");
+      final url = Uri.http(SERVER_URL, "notes/newItem");
+      print(url);
       final responseId = await http.post(
         url,
         headers: {"Content-type": "application/json"},

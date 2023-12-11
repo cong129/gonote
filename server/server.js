@@ -14,7 +14,7 @@ const setupServer = () => {
   //   CORSエラーの解消;
   app.use(cors());
 
-  app.get('/all-note-titles', async (req, res) => {
+  app.get('/notes/all-note-titles', async (req, res) => {
     try {
       const notesOnDB = await knex
         .select('*')
@@ -26,7 +26,7 @@ const setupServer = () => {
     }
   });
 
-  app.post('/newItem', async (req, res) => {
+  app.post('/notes/newItem', async (req, res) => {
     console.log(req.body);
     try {
       const result = await knex(NOTES_TABLE)
@@ -42,7 +42,7 @@ const setupServer = () => {
     }
   });
 
-  app.delete('/:id', async (req, res) => {
+  app.delete('/notes/:id', async (req, res) => {
     try {
       console.log(req.params.id);
       await knex(NOTES_TABLE).where({ id: req.params.id }).del();
@@ -52,7 +52,7 @@ const setupServer = () => {
     }
   });
 
-  app.put('/:id', async (req, res) => {
+  app.put('/notes/:id', async (req, res) => {
     let newData = { ...req.body };
     delete newData.id;
     try {

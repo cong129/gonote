@@ -49,6 +49,6 @@ class MyApp extends StatelessWidget {
             foregroundColor: lightModeColorTheme.onPrimaryContainer,
           ))),
       home: const Notes(),
-    )
+    );
   }
 }

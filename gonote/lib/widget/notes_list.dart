@@ -42,7 +42,7 @@ class NotesList extends StatelessWidget {
         ),
         key: ValueKey(notes[index]),
         onDismissed: (direction) async {
-          final url = Uri.http("10.0.2.2:3000", "/${notes[index].id}");
+          final url = Uri.http(SERVER_URL, "/notes/${notes[index].id}");
           await http.delete(url);
           onRemoveNote(notes[index]);
         },

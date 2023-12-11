@@ -16,7 +16,7 @@ class _NotesState extends State<Notes> {
   List<Note> _registeredNotes = [];
 
   void _loadItems() async {
-    final url = Uri.http(SERVER_URL, "/all-note-titles");
+    final url = Uri.http(SERVER_URL, "/notes/all-note-titles");
     final response = await http.get(url);
     final listData = json.decode(response.body);
     // print(listData);
@@ -115,6 +115,7 @@ class _NotesState extends State<Notes> {
         title: const Center(
           child: Text(
             "GONote",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
         actions: [

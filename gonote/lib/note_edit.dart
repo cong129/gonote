@@ -23,7 +23,9 @@ class NoteEdit extends StatelessWidget {
         note: note,
       );
 
-      final url = Uri.http(SERVER_URL, "$id");
+      final url = Uri.http(SERVER_URL, "/notes/$id");
+      print(url);
+
       final response = await http.put(
         url,
         headers: {"Content-type": "application/json"},
